@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package dictionary;
+
+service DictionaryService {
+  rpc GetTerm(GetTermRequest) returns (TermResponse);
+  rpc AddTerm(AddTermRequest) returns (OperationResponse);
+  rpc UpdateTerm(UpdateTermRequest) returns (OperationResponse);
+  rpc DeleteTerm(DeleteTermRequest) returns (OperationResponse);
+  rpc GetAllTerms(GetAllRequest) returns (TermsList);
+  rpc SearchTerms(SearchRequest) returns (TermsList);
+  rpc GetTermsByCategory(CategoryRequest) returns (TermsList);
+  rpc GetRelatedTerms(RelatedTermsRequest) returns (TermsList);
+}
+
+message GetTermRequest {
+  string term = 1;
+}
+
+message AddTermRequest {
+  string term = 1;
+  string definition = 2;
+  string category = 3;
+  repeated string related_terms = 4;
+  string source = 5;
+}
+
+message UpdateTermRequest {
+  string term = 1;
+  string definition = 2;
+  string category = 3;
+  repeated string related_terms = 4;
+  string source = 5;
+}
+
+message DeleteTermRequest {
+  string term = 1;
+}
+
+message TermResponse {
+  string term = 1;
+  string definition = 2;
+  string category = 3;
+  repeated string related_terms = 4;
+  string source = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message OperationResponse {
+  bool success = 1;
+  string message = 2;
+  string term = 3;
+}
+
+message TermsList {
+  repeated TermResponse terms = 1;
+  int32 total_count = 2;
+}
+
+message GetAllRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message SearchRequest {
+  string query = 1;
+  string category = 2;
+}
+
+message CategoryRequest {
+  string category = 1;
+}
+
+message RelatedTermsRequest {
+  string term = 1;
+  int32 depth = 2;
+}

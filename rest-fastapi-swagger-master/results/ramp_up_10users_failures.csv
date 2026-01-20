@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+PUT,PUT /terms/[key],"CatchResponseError('Status 404: {""detail"":""Term not found""}')",6
+GET,GET /terms/[key],"CatchResponseError('Status 404: {""detail"":""Term not found""}')",19
+POST,POST /terms/,"CatchResponseError('Status 400: {""detail"":""Term already exists""}')",7

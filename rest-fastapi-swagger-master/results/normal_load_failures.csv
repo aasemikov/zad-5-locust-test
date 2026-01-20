@@ -1,0 +1,6 @@
+Method,Name,Error,Occurrences
+POST,POST /terms/,CatchResponseError('Status 0: '),1
+PUT,PUT /terms/[key],"CatchResponseError('Status 404: {""detail"":""Term not found""}')",197
+DELETE,DELETE /terms/[key],CatchResponseError('DELETE failed: 404'),33
+GET,GET /terms/[key],"CatchResponseError('Status 404: {""detail"":""Term not found""}')",1070
+POST,POST /terms/,"CatchResponseError('Status 400: {""detail"":""Term already exists""}')",528

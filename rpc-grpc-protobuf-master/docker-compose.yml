@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  dictionary-grpc:
+    build:
+      context: .
+      dockerfile: dictionary_service/Dockerfile
+    ports:
+      - "50051:50051"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - dictionary-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; channel = grpc.insecure_channel('localhost:50051'); stub = dictionary_pb2_grpc.DictionaryServiceStub(channel); stub.GetTerm(dictionary_pb2.GetTermRequest(term='gRPC'))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - FLASK_ENV=production
+    depends_on:
+      - dictionary-grpc
+    networks:
+      - dictionary-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  dictionary-net:
+    driver: bridge
+
+volumes:
+  dictionary-data:
